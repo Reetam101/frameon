@@ -5,7 +5,7 @@ const path = require("path");
 const app = express();
 // const PORT = 5000;
 const server = app.listen(process.env.PORT || 3000, function () {
-  console.log("Listening on port ", PORT);
+  //   console.log("Listening on port %d", PORT);
 });
 
 const fs = require("fs");
