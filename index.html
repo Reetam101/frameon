@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Frameon</title>
+      <link rel="stylesheet" href="public/Assets/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="public/Assets/css/style.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="public/Assets/js/jquery-3.4.1.min.js"></script>
+      <script src="public/Assets/js/app.js"></script>
+      <script>
+         $(function() {
+             const urlParams = new URLSearchParams(window.location.search)
+             const meeting_id = urlParams.get('meetingID')
+             const user_id = window.prompt("Enter your name:")
+
+             if(!user_id || !meeting_id) {
+                 alert('User ID or Meeting ID is missing')
+                 window.location.href = 'action.html'
+                 return;
+             }
+             $("#meetingContainer").show()
+
+             MyApp._init(user_id, meeting_id);
+         })
+      </script>
+   </head>
+   <body>
+      <main class=" d-flex flex-column home-wrap">
+         <div class="g-top text-light">
+            <div class="top-remote-video-show-wrap d-flex">
+               <div id="meetingContainer" style="display: none;flex-basis: 75%;">
+                  <div class="call-wrap" style="background-color: black;">
+                     <div class="video-wrap" id="divUsers" style="display:flex; flex-wrap:wrap">
+                        <div id="me" class="userbox display-center flex-column">
+                           <h2 class="display-center" style="font-size: 14px;"></h2>
+                           <div class="display-center">
+                              <video autoplay muted id="LocalVideoPlayer"></video>
+                           </div>
+                        </div>
+                        <div id="otherTemplate" class="userbox display-center flex-column" style="display:none">
+                           <h2 class="display-center" style="font-size: 14px;"></h2>
+                           <div class="display-center">
+                              <video  autoplay muted id="LocalVideoPlayer"></video>
+                              <audio autoplay controls style="display:none"></audio>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="g-right-details-wrap bg-light text-secondary h-100" style="flex-basis: 25%;  z-index: 1; display:none;">
+                  <div class="meeting-heading-wrap d-flex justify-content-between align-items-center pr-3 pl-3" style="height: 10vh;">
+                     <div class="meeting-heading font-weight-bold " style="font-family: MonumentGrotesk-Regular;">Meeting Info</div>
+                     <div class="meeting-heading-cross display-center cursor-pointer">
+                        <span class="material-icons">clear</span>
+                     </div>
+                  </div>
+                  <div class="people-chat-wrap d-flex justify-content-between align-items-center ml-3 mr-3 pr-3 pl-3" style="height: 10vh;font-size: 14px;">
+                     <div class="people-heading display-center cursor-pointer">
+                        <div class="people-headin-icon display-center mr-1">
+                           <span class="material-icons">people</span>
+                        </div>
+                        <div class="people-heading-text display-center">
+                           Participant(s)  (<span class="participant-count">1</span>)
+                        </div>
+                     </div>
+                     <div class="chat-heading d-flex just-content-round align-items-center cursor-pointer">
+                        <div class="chat-heading-icon display-center mr-1">
+                           <span class="material-icons">
+                           message
+                           </span>
+                        </div>
+                        <div class="chat-heading-text">
+                           Chat
+                        </div>
+                     </div>
+                  </div>
+                  <div class="in-call-chat-wrap mr-3 ml-3 pl-3 pr-3" style="font-size: 14px; height: 69vh; ">
+                     <div class="in-call-wrap-up" style="display: none !important; ">
+                        <div class="in-call-wrap d-flex justify-content-between align-items-center mb-3">
+                           <div class="participant-img-name-wrap display-center cursor-pointer">
+                              <div class="participant-img">
+                                 <img src="public/Assets/images/person.png" alt="" class="border border-secondary" style="height: 40px;width: 40px;border-radius: 50%;">
+                              </div>
+                              <div class="participant-name ml-2">You</div>
+                           </div>
+                           <div class="participant-action-wrap display-center">
+                              <!--<div class="participant-action-dot display-center mr-2 cursor-pointer">
+                                 <span class="material-icons">
+                                     more_vert
+                                 </span>
+                                 </div>-->
+                              <div class="participant-action-pin display-center mr-2 cursor-pointer">
+                                 <span class="material-icons">
+                                 <img src="https://img.icons8.com/emoji/48/000000/green-circle-emoji.png" style="height:17px;"/>
+                                 </span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="chat-show-wrap text-secondary  flex-column justify-content-between h-100" style="font-size: 14px; display: flex;">
+                        <div class="chat-message-show" style="overflow-y: scroll;" id="messages"></div>
+                        <div class="chat-message-sent d-flex justify-content-between align-items-center" style="margin-bottom:35px">
+                           <div class="chat-message-sent-input" style="width: 85%;">
+                              <input type="text" name="" class="chat-message-sent-input-field w-100" id="msgbox" placeholder="Send a message to everyone" style="border-bottom: 1px solid teal; border: none;">
+                           </div>
+                           <div class="chat-message-sent-action display-center" id="btnsend" style="color: teal; cursor:pointer;">
+                              <span class="material-icons">send</span>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="g-top-left bg-light text-secondary w-25 d-flex align-items-center justify-content-between pl-2 pr-2">
+               <div class="top-left-participant-wrap pt-2 cursor-pointer">
+                  <div class="top-left-participant-icon">
+                     <span class="material-icons">people</span>
+                  </div>
+                  <div class="top-left-participant-count participant-count">1</div>
+               </div>
+               <div class="top-left-chat-wrap pt-2 cursor-pointer">
+                  <span class="material-icons">message</span>
+               </div>
+               <div class="top-left-time-wrap"></div>
+            </div>
+         </div>
+         <div class="g-bottom bg-light m-0 d-flex justify-content-between align-items-center">
+            <div class="bottom-left d-flex" style="height:10vh">
+               <div class="g-details border border-success mb-2" style="display: none;min-height: 19.5vh;">
+                  <div class="g-details-heading d-flex justify-content-between align-items-center border-bottom pb-1">
+                     <div class="g-details-heading-detail d-flex align-items-center cursor-pointer">
+                        <img src="https://img.icons8.com/material-outlined/24/000000/info.png" style="margin-top:-4px; margin-right: 2px;"/>
+                        Info
+                        <span>
+                        </span>
+                     </div>
+                     <div class="g-details-heading-attachment d-flex align-items-center cursor-pointer">
+                        <span class="material-icons">attachment</span style="margin-down:-5px;  margin-right: 2px;">Attachment<span></span>
+                     </div>
+                  </div>
+                  <div class="g-details-heading-show-wrap">
+                     <div class="g-details-heading-show">
+                        <div style="font-weight: 600;color:gray">Joining Info</div>
+                        <div class="meeting_url" style="padding: 5px 0;" data-toggle="tooltip" data-placement="top"></div>
+                        <!--<div style="cursor: pointer;">
+                           <span class="material-icons" style="font-size: 14px;">content_copy</span>
+                           <span class="copy_info font-weight-bold">Copy Joining Info <span style="display: none;background-color: aquamarine; border-radius: 5px;" class="link-conf font-weight-bold p-1">Link Copied</span></span>
+                        </div>-->
+                     </div>
+                     <div class="g-details-heading-show-attachment" style="display: none;position: relative;">
+                        <div class="show-attach-file"></div>
+                        <div class="upload-attach-file">
+                           <form enctype="multipart/form-data" ref="uploadForm" class="display-center" id="uploadForm" style="justify-content: space-between;">
+                              <div class="custom-file" style="flex-basis:79%">
+                                 <input type="file" class="custom-file-input" id="customFile" name="imagefile">
+                                 <label for="customFile" class="custom-file-label">Choose File</label>
+                              </div>
+                              <div class="share-button-wrap">
+                                 <button class="btn btn-primary btn-sm share-attach" style="flex-basis:19%;padding: 6px 20px;">Share</button>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="display-center cursor-pointer meeting-details-button">
+                  Meeting Info<span class="material-icons">keyboard_arrow_down</span>
+               </div>
+            </div>
+            <div class="bottom-middle d-flex just-content-center align-items-center" style="height: 10vh;">
+               <div class="mic-toggle-wrap action-icon-style display-center mr-2 cursor-pointer" id="miceMuteUnmute">
+                  <span class='material-icons' >mic_off</span>
+               </div>
+               <div class="end-call-wrap action-icon-style display-center mr-2 cursor-pointer">
+                  <span class="material-icons text-danger">call</span>
+               </div>
+               <div class="video-toggle-wrap action-icon-style display-center cursor-pointer" id="videoCamOnOff"><span class="material-icons" >videocam_off</span></div>
+            </div>
+            <div class="bottom-right d-flex just-content-center align-items-center mr-3" id="screenShare-wrap" style="height: 10vh;">
+               <div class="present-now-wrap d-flex just-content-center flex-column align-items-center mr-5 cursor-pointer" id="ScreenShareOnOf">
+                  <img src="https://img.icons8.com/material-sharp/24/000000/share-rounded.png"/>
+                  <div>Screen share</div>
+               </div>
+               <div class="option-wrap cursor-pointer display-center" style="height: 10vh; position:relative;">
+                  <div class="recording-show">
+                     <button class="btn btn-dark text-danger start-record srtyle="color: whitesmoke;">Start Recording</button>
+                  </div>
+                  <div class="option-icon">
+                     <img src="https://img.icons8.com/flat-round/64/000000/record.png" style="height:37px;"/>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="top-box-show" style="display: none;">
+         </div>
+      </main>
+   </body>
+</html>

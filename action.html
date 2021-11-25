@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frameon!</title>
+    <link rel="stylesheet" href="public/Assets/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link rel="stylesheet" href="public/Assets/css/style.css" />
+  </head>
+  <body style="padding-top: 3.5rem">
+    <div class="noise"></div>
+    <div class="container">
+      <div class="text">
+        <h1>frameon</h1>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-expand-md fixed-top">
+      <img
+        src="public/assets/images/logo1.png"
+        class="logo"
+        alt=""
+      />
+
+      <a
+        class="nav-link"
+        href="#"
+        style="font-family: MonumentExtended-Regular; color: #892946";
+"
+        >Frameon
+      </a>
+
+      <div class="collapse navbar-collapse">
+         <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item">
+            <button
+              class="
+                btn btn-outline-secondary btn-lg
+                text-info
+                font-weight-bold
+                join-meeting
+              "
+
+            >
+              Join a meeting
+            </button>
+          </li>
+          <li class="nav-item">
+            <button
+              class="
+                btn btn-outline-secondary btn-lg
+                text-info
+                font-weight-bold
+                join-meeting
+              "
+            >
+              New meeting
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div class="jumbotron h-100 d-flex">
+
+       <h1 style="font-size: 3rem; padding-top: 22rem;">
+            Premium video conference
+        </h1>
+
+        <div class="container w-0">
+
+
+          <ul class="display-center justify-content-left">
+            <li style="padding: 0">
+              <button
+                class="
+                  btn btn-lg
+                  text-light
+                  display-center
+                  new-meeting
+                "
+                style=" background-color: #115A29; font-family: MonumentGrotesk-Regular; "
+              >
+                <span class="material-icons mr-2">video_call</span>New Meeting
+              </button>
+            </li>
+            <li class="pl-3">
+              <button
+                class="
+                  btn btn-lg btn-outline-secondary
+                  text-dark
+                  font-weight-bold
+                  display-center
+                "
+                style="background-color: #ffffff"
+              >
+                <span class="material-icons mr-2">keyboard</span
+                ><input
+                  type="text"
+                  placeholder="Enter a code"
+                  style="border: none"
+                  class="enter-code"
+                />
+              </button>
+            </li>
+            <li
+              class="text-dark font-weight-bold cursor-pointer pl-2 join-action"
+              style=" font-family: MonumentGrotesk-Regular; "
+            >
+              Join
+            </li>
+          </ul>
+        </div>
+        <div class="container w-50">
+          <img
+            src="public/Assets/images/google-meet-people.jpg"
+            alt=""
+            class="signin-image"
+          />
+        </div>
+      </div>
+    </main>
+    <footer class="container">
+      <h2>
+        Learn more about <span class="learn-more text-info">frameon</span>.
+      </h2>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(function () {
+        $(document).on("click", ".join-meeting", function () {
+          $(".enter-code").focus();
+        });
+
+        $(document).on("click", ".join-action", function () {
+          const join_value = $(".enter-code").val();
+          const meeting_url =
+            window.location.origin + "?meetingID=" + join_value;
+          window.location.replace(meeting_url);
+        });
+
+        $(document).on("click", ".new-meeting", function () {
+          const eight_d_value = Math.floor(Math.random() * 100000000);
+          const meeting_url =
+            window.location.origin + "?meetingID=" + eight_d_value;
+          window.location.replace(meeting_url);
+        });
+      });
+    </script>
+  </body>
+</html>
