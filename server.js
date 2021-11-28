@@ -16,6 +16,7 @@ const io = require("socket.io")(server, {
 });
 app.use(express.static(path.join(__dirname, "")));
 
+/* this line has a problem */
 var userConnections = [];
 io.on("connection", (socket) => {
   console.log(`socket id is ${socket.id}`);
@@ -91,11 +92,20 @@ io.on("connection", (socket) => {
     if (disUser) {
       const meetingid = disUser.meeting_id;
 
-      userConnections.filter((p) => p.connectionId == socket.id);
+      // userConnections.filter((p) => p.connectionId == socket.id);
+      // console.log(disUser)
+      // const newList = userConnections.filter((p) => p.connectionId != disUser.connectionId)
+      // //const list = userConnections.filter((p) => p.meeting_id == meetingid);
+      // const list = newList.filter((p) => p.meeting_id == meetingid);
+
+      // console.log(newList);
+      userConnections.splice(userConnections.indexOf(disUser), 1);
       const list = userConnections.filter((p) => p.meeting_id == meetingid);
 
+      console.log(userConnections);
       list.forEach((v) => {
         const userNumberAfUserLeave = userConnections.length;
+        console.log("No. of user after leave ", userNumberAfUserLeave);
 
         socket
           .to(v.connectionId)

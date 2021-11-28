@@ -559,7 +559,7 @@ var MyApp = (function () {
     $(".top-box-show").html("");
   });
 
-  $(document).on("click", ".copy-info", function () {
+  $(document).on("click", ".copy_info", function () {
     var $temp = $("<input>");
     $("body").append($temp);
     $temp.val($(".meeting_url").text()).select();
