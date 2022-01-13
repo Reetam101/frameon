@@ -398,7 +398,7 @@ var MyApp = (function () {
         document.querySelector(".show-attach-file");
 
       attachFileAreaForOther.innerHTML +=
-        "<div class='left-align' style ='display:flex; align-items:center;'> <img src='public/assets/images/person22.png' style='height:40px; width:40px;' class='caller-image circle'><div style='font-weight:600; margin:0 5px;'>" +
+        "<div class='left-align' style ='display:flex; align-items:center;'> <img src='public/Assets/images/person22.png' style='height:40px; width:40px;' class='caller-image circle'><div style='font-weight:600; margin:0 5px;'>" +
         data.username +
         "</div>:<div><a style='color: red;' href=' " +
         data.filePath +
@@ -631,7 +631,7 @@ var MyApp = (function () {
       "public/attachment/" + meeting_id + "/" + attachFileName;
 
     attachFileArea.innerHTML +=
-      "<div class='left-align' style ='display:flex; align-items:center;'> <img src='public/assets/images/person22.png' style='height:40px; width:40px;' class='caller-image circle'><div style='font-weight:600; margin:0 5px;'>" +
+      "<div class='left-align' style ='display:flex; align-items:center;'> <img src='public/Assets/images/person22.png' style='height:40px; width:40px;' class='caller-image circle'><div style='font-weight:600; margin:0 5px;'>" +
       user_id +
       "</div>:<div><a style='color: red;' href=' " +
       attachFilePath +
