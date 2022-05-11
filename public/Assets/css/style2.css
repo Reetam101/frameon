@@ -1,0 +1,42 @@
+.whiteboard {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+
+  z-index:-1;
+  border: 1px solid black;
+  margin-bottom: 50px;
+}
+
+#welcome-room {
+  text-align: center;
+}
+
+#colors-toolbar{
+  position: fixed;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, -50%);
+  margin: 0 100px auto;
+}
+
+.color {
+  display: inline-block;
+  border-radius: 50px;
+  height: 48px;
+  width: 48px;
+}
+
+canvas{
+  cursor: url(images/pen.png), crosshair;
+}
+
+.color.black { background-color: black; }
+.color.red { background-color: #db2b25; }
+.color.green { background-color: #22a345; }
+.color.blue { background-color: #1d4fdb; }
+.color.yellow { background-color: #dbb21d; }

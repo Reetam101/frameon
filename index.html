@@ -10,11 +10,14 @@
       <link rel="stylesheet" href="public/Assets/css/style.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
       <script src="/socket.io/socket.io.js"></script>
+      <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+      <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
       <script src="public/Assets/js/jquery-3.4.1.min.js"></script>
       <script src="public/Assets/js/app.js"></script>
       <script>
          $(function() {
              const urlParams = new URLSearchParams(window.location.search)
+             console.log(urlParams)
              const meeting_id = urlParams.get('meetingID')
              const user_id = window.prompt("Enter your name:")
 
@@ -23,6 +26,7 @@
                  window.location.href = 'action.html'
                  return;
              }
+             
              $("#meetingContainer").show()
 
              MyApp._init(user_id, meeting_id);
@@ -52,6 +56,9 @@
                      </div>
                   </div>
                </div>
+                  <!-- <Button id="to-whiteboard" class="btn btn-primary">
+                     To Whiteboard
+                  </Button> -->
                <div class="g-right-details-wrap bg-light text-secondary h-100" style="flex-basis: 25%;  z-index: 1; display:none;">
                   <div class="meeting-heading-wrap d-flex justify-content-between align-items-center pr-3 pl-3" style="height: 10vh;">
                      <div class="meeting-heading font-weight-bold " style="font-family: MonumentGrotesk-Regular;">Meeting Info</div>
@@ -138,6 +145,9 @@
                         Info
                         <span>
                         </span>
+                        
+                           <!-- <button id="to-whiteboard">To whiteboard</button> -->
+                        
                      </div>
                      <div class="g-details-heading-attachment d-flex align-items-center cursor-pointer">
                         <span class="material-icons">attachment</span style="margin-down:-5px;  margin-right: 2px;">Attachment<span></span>
@@ -154,7 +164,7 @@
                      </div>
                      <div class="g-details-heading-show-attachment" style="display: none;position: relative;">
                         <div class="show-attach-file"></div>
-                        <div class="upload-attach-file">
+                        <div class="upload-attach-file"> 
                            <form enctype="multipart/form-data" ref="uploadForm" class="display-center" id="uploadForm" style="justify-content: space-between;">
                               <div class="custom-file" style="flex-basis:79%">
                                  <input type="file" class="custom-file-input" id="customFile" name="imagefile">
@@ -173,9 +183,16 @@
                </div>
             </div>
             <div class="bottom-middle d-flex just-content-center align-items-center" style="height: 10vh;">
+               <div class="display-center mr-2 cursor-pointer">
+                  <span class='material-icons' >
+                     <button class="btn btn-primary" id="to-whiteboard">
+                        To whiteboard
+                     </button></span>
+               </div>
                <div class="mic-toggle-wrap action-icon-style display-center mr-2 cursor-pointer" id="miceMuteUnmute">
                   <span class='material-icons' >mic_off</span>
                </div>
+               <!-- <div><button id="to-whiteboard">To whiteboard</button></div> -->
                <div class="end-call-wrap action-icon-style display-center mr-2 cursor-pointer">
                   <span class="material-icons text-danger">call</span>
                </div>
