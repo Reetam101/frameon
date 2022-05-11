@@ -58,6 +58,21 @@ var AppProcess = (function () {
         await videoProcess(video_states.ScreenShare);
       }
     });
+
+    $('#to-whiteboard').on('click', async function () {
+      console.log('*******clicked******')
+      const meet_id = window.location.search
+
+      window.open(`/whiteboard.html${meet_id}`, "_blank")
+      // connection.addEventListener("connectionstatechange", (event) => {
+      //   console.log(event)
+      //   if(connection.connectionState === "connected") {
+      //     console.log("****connected****")
+      //   }
+      // })
+    })
+
+
   }
   async function loadAudio() {
     try {
@@ -252,6 +267,9 @@ var AppProcess = (function () {
     }
     return connection;
   }
+
+
+
   async function setOffer(connid) {
     var connection = peers_connection[connid];
     var offer = await connection.createOffer();
@@ -337,6 +355,7 @@ var AppProcess = (function () {
     closeConnectionCall: async function (connId) {
       await closeConnection(connId);
     },
+
   };
 })();
 var MyApp = (function () {
@@ -352,6 +371,8 @@ var MyApp = (function () {
     event_process_for_signaling_server();
     eventHandling();
   }
+
+  
 
   function event_process_for_signaling_server() {
     socket = io.connect();

@@ -3,9 +3,9 @@ const { fstat } = require("fs");
 //const { join } = require('path')
 const path = require("path");
 const app = express();
-// const PORT = 3000;
+const PORT = 3000;
 const server = app.listen(process.env.PORT || 3000, function () {
-  //   console.log("oh", PORT);
+    console.log("Running on ", PORT);
 });
 
 const fs = require("fs");
@@ -16,17 +16,18 @@ const io = require("socket.io")(server, {
 });
 app.use(express.static(path.join(__dirname, "")));
 
-/* this line has a problem */
 var userConnections = [];
+let myConnections = []
+var takenRooms = []
 io.on("connection", (socket) => {
-  console.log(`socket id is ${socket.id}`);
+  // console.log(`socket id is ${socket.id}`);
   socket.on("userconnect", (data) => {
-    console.log("userconnect", data.displayName, data.meetingid);
+    // console.log("userconnect", data.displayName, data.meetingid);
 
     var other_users = userConnections.filter(
       (p) => p.meeting_id == data.meetingid
     );
-
+    myConnections.push(socket)
     userConnections.push({
       connectionId: socket.id,
       user_id: data.displayName,
@@ -35,6 +36,7 @@ io.on("connection", (socket) => {
 
     var userCount = userConnections.length;
     console.log(userCount);
+    // console.log(userConnections)
 
     other_users.forEach((v) => {
       socket.to(v.connectionId).emit("inform_others_about_me", {
@@ -44,7 +46,34 @@ io.on("connection", (socket) => {
       });
     });
     socket.emit("inform_me_about_other_user", other_users);
+
   });
+
+  socket.on('join-wb-room', (room, nickname, cb) => {
+    if (takenRooms.includes(room)) {
+        cb(`Welcome to ${room}`);
+    } else {
+        cb(`Created room ${room}`);
+        takenRooms.push(room);
+    }
+
+    socket.room = room;
+    socket.join(room);
+  });
+
+  socket.on('clearBoard', (room) =>{
+    socket.to(room).emit('clear');
+  });
+
+  socket.on('disconnection', function(){
+    socket.emit('disconnected');
+  });
+  
+  socket.on('userDrawing', (data, room) => {
+      socket.to(room).emit('drawing', data);
+  });
+
+
   socket.on("SDPProcess", (data) => {
     socket.to(data.to_connid).emit("SDPProcess", {
       message: data.message,
@@ -86,19 +115,12 @@ io.on("connection", (socket) => {
     }
   });
 
+
   socket.on("disconnect", () => {
     console.log("User disconnected");
     const disUser = userConnections.find((p) => p.connectionId == socket.id);
     if (disUser) {
       const meetingid = disUser.meeting_id;
-
-      // userConnections.filter((p) => p.connectionId == socket.id);
-      // console.log(disUser)
-      // const newList = userConnections.filter((p) => p.connectionId != disUser.connectionId)
-      // //const list = userConnections.filter((p) => p.meeting_id == meetingid);
-      // const list = newList.filter((p) => p.meeting_id == meetingid);
-
-      // console.log(newList);
       userConnections.splice(userConnections.indexOf(disUser), 1);
       const list = userConnections.filter((p) => p.meeting_id == meetingid);
 

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="public/Assets/css/style2.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js" integrity="sha512-/xb5+PNOA079FJkngKI2jvID5lyiqdHXaUUcfmzE0X0BdpkgzIWHC59LOG90a2jDcOyRsd1luOr24UCCAG8NNw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Whiteboard</title>
+  </head>
+  
+  <body>
+  <div>
+    <canvas class="whiteboard"></canvas>
+  </div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="">Whiteboard</a>
+    <div class="form-inline my-2 my-lg-0">
+      <button id="clear-button" class="btn btn-primary my-2 my-sm-0 mr-1" type="submit">Clear</button>
+      <button id="exit-room" class="btn btn-danger my-2 my-sm-0 mr-1" type="submit">Disconnect</button>
+      <button id="modal-connect-button" data-toggle="modal" data-target="#connectionModal" class="btn btn-danger my-2 my-sm-0" type="submit">Connect</button>
+    </form>
+  </div>
+</nav>
+
+<div class="container">
+  
+  <div class="modal fade" id="connectionModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label">Connect to a room</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <input id="nick-name" class="form-control mr-sm-2" type="text" placeholder="Nickname" aria-label="Nickname"></br>
+              <input disabled id="room-input" class="form-control mr-sm-2" type="search" placeholder="Room ID" aria-label="Room ID">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button id="room-submit" type="submit" data-dismiss="modal" class="btn btn-primary">Connect</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="welcome-room"></div>
+      <div id="colors-toolbar">
+        <div class="color black"></div>
+        <div class="color red"></div>
+        <div class="color green"></div>
+        <div class="color blue"></div>
+        <div class="color yellow"></div></div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="public/Assets/js/whiteboard_functionality.js"></script>
+  </body>
+</html>
